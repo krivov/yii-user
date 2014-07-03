@@ -19,6 +19,9 @@ $this->menu=array(
 </div>
 <?php endif; ?>
 <table class="dataGrid">
+    <tr>
+        <?php echo '<img src="'.$profile->attachment.'" />'; ?>
+    </tr>
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?></th>
 	    <td><?php echo CHtml::encode($model->username); ?></td>

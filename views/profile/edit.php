@@ -42,6 +42,10 @@ $this->menu=array(
 			echo $widgetEdit;
 		} elseif ($field->range) {
 			echo $form->dropDownList($profile,$field->varname,Profile::range($field->range));
+        } elseif($field->varname == 'filename') {
+                echo '<img src="'.$profile->attachment.'" /><br>';
+                echo $form->fileField($profile,'filename').'<br>';
+                echo CHtml::link('Удалить аватар',array('deleteimage'));
 		} elseif ($field->field_type=="TEXT") {
 			echo $form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
 		} else {

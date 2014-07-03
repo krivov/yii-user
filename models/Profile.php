@@ -93,7 +93,13 @@ class Profile extends UActiveRecord
 					array_push($rules,$field_rule);
 				}
 			}
-			
+
+            array_push(
+                $rules,
+                array('filename', 'file','allowEmpty'=>true,'types'=>'png,jpg,jpeg,,bmp,gif', 'maxSize' => 5000000)
+            );
+            array_push($rules,array('filename', 'unsafe'));
+
 			array_push($rules,array(implode(',',$required), 'required'));
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
@@ -102,6 +108,35 @@ class Profile extends UActiveRecord
 		}
 		return self::$_rules;
 	}
+
+    public function behaviors()
+    {
+        return array(
+            'image' => array(
+                'class' => 'AttachmentBehavior',
+                'attribute' => 'filename',
+                'fallback_image' => '/upload/avatars/default.png',
+                'path' => "/upload/avatars/",
+                'newfilename' => ":id-".md5(time()).".:ext",
+                'processors' => array(
+                    array(
+                        'class' => 'GDProcessor',
+                        'method' => 'resize',
+                        'params' => array(
+                            'width' => 250,
+                            'height' => 250,
+                            'keepratio' => false
+                        )
+                    )
+                ),
+                'styles' => array(
+                    # имя => размер
+                    # используйте !, чтобы не сохранять пропорции
+                    'thumb' => '!100x100',
+                )
+            ),
+        );
+    }
 
 	/**
 	 * @return array relational rules.

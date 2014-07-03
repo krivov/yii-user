@@ -86,6 +86,20 @@ class ProfileController extends Controller
 	    }
 	}
 
+    public function actionDeleteImage()
+    {
+        $model = $this->loadUser();
+        $profile=$model->profile;
+
+        // вызываем метод расширения Yii Attachment Behavior
+        $profile->deleteAttachment();
+        // удаляем путь к изображению из базы данных
+        $profile->filename = 0;
+        $profile->save();
+
+        $this->redirect(array('edit'));
+    }
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
